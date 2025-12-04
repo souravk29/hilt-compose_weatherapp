@@ -4,9 +4,12 @@ plugins {
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.kotlin.compose) apply false
 
-    // ksp plugin added :
+    // ksp (kotlin symbol processing) plugin added
     id("com.google.devtools.ksp") version "2.2.10-2.0.2"
     kotlin("jvm") version "2.2.10" apply false
+
+    // hilt plugin added
+    id("com.google.dagger.hilt.android") version "2.57.2" apply false
 
 
 

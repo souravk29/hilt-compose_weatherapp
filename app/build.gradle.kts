@@ -4,6 +4,8 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 
     id("com.google.devtools.ksp")
+    id("com.google.dagger.hilt.android")
+
 
 
 }
@@ -60,4 +62,11 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // adding dependencies of ksp and hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+
+    // This library allows you to use Hilt ViewModels inside Jetpack Compose smoothly.
+    implementation(libs.hilt.navigation.compose)
 }
