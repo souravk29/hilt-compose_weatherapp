@@ -1,8 +1,9 @@
 package com.example.hiltcompose_weatherapp.repo
 
 import com.example.hiltcompose_weatherapp.model.WeatherInfo
+import javax.inject.Inject
 
-class WeatherRepositoryImpl: WeatherRepository {
+class WeatherRepositoryImpl @Inject constructor() : WeatherRepository {
 
 
     // dummy data for demonstration
@@ -29,3 +30,17 @@ class WeatherRepositoryImpl: WeatherRepository {
 
 
 }
+
+/*
+
+@Inject constructor() means:
+
+“Hilt, this class can be automatically created and injected wherever needed.”
+
+✔ No need to manually write @Provides
+✔ Hilt knows how to create the class
+✔ Hilt can inject this class into ViewModels or other classes
+
+
+
+ */
