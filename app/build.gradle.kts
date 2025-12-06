@@ -68,5 +68,5 @@ dependencies {
     ksp(libs.hilt.android.compiler)
 
     // This library allows you to use Hilt ViewModels inside Jetpack Compose smoothly.
-    implementation(libs.hilt.navigation.compose)
+    implementation(libs.androidx.hilt.navigation.compose)
 }
