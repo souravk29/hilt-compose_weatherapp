@@ -1,20 +1,22 @@
 package com.example.hiltcompose_weatherapp.viewmodel
 
+import android.R
+import android.location.Location
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.hiltcompose_weatherapp.repo.WeatherRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
 // "@HiltViewModel" : Tells hilt that this ViewModel should be injectable
 
 @HiltViewModel
-class WeatherViewModel @Inject constructor(
-    private val weatherRepository: WeatherRepository
-): ViewModel() {                                                                            // this class extends the "ViewModel" =>this class will act as ViewModel
+class WeatherViewModel @Inject constructor( private val weatherRepository: WeatherRepository ): ViewModel() {                                                                            // this class extends the "ViewModel" =>this class will act as ViewModel
 
     // UI state
     private val _uiState = MutableStateFlow<WeatherUiState>(WeatherUiState.Loading)
@@ -27,7 +29,53 @@ class WeatherViewModel @Inject constructor(
     val selectedLocation: StateFlow<String> = _selectedLocation.asStateFlow()
 
 
+    init {
+        loadLocations()                                                                                                 // load location when viewmodel is created
+    }
+
+
+    private fun loadLocations(){
+
+        viewModelScope.launch {                                                                                            // viewModelScope.launch : starts a background task.
+                                                                                                                           // It asks the repository: weatherRepository.getAllLocation().
+            val locationList = weatherRepository.getAllLocation()
+            _locations.value = locationList
+
+            if (locationList.isNotEmpty()){
+                _selectedLocation.value = locationList[0]
+                loadWeatherForLocation(locationList[0])
+            }
+        }
+    }
+
+    private fun loadWeatherForLocation(location: String){
+
+        viewModelScope.launch {
+            _uiState.value = WeatherUiState.Loading
+
+            // in real apps this would be asynchronous call and could be handled bt try and catch block
+            val weatherInfo = weatherRepository.getWeatherForLocation(location)
+            _uiState.value = WeatherUiState.Success(weatherInfo)
+
+        }
+    }
+
+    fun selectedLocation(location: String){
+        _selectedLocation.value = location
+        loadWeatherForLocation(location)
+    }
+
+
+
+
+
+
+
+
 }
+
+
+
 
 
 
@@ -39,7 +87,12 @@ class WeatherViewModel @Inject constructor(
 
  */
 
+/*
 
+viewModelScope is a built-in feature that helps you manage background tasks (like fetching data from the internet or reading a database) safely and automatically.
+It is part of Kotlin Coroutines, which is the standard way to handle asynchronous code in Android.
+
+*/
 
 /*
 
