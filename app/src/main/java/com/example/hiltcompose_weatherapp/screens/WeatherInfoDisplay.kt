@@ -45,7 +45,7 @@ fun WeatherInfoDisplay( weatherInfo: WeatherInfo ){
             Spacer(modifier = Modifier.width(16.dp))
 
             Text(
-                text = "${weatherInfo.temperature}deg C",
+                text = weatherInfo.temperature,
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold
             )
